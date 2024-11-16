@@ -25,4 +25,7 @@ public class User {
     private String studioEmail;
     private String studioPassword;
     private List<Artist> studioArtists;
+    private List<String> studioAmages;
+    private String studiolocation;
+    private String studioInstagram;
 }

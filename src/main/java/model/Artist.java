@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +27,5 @@ public class Artist {
     private String artistDescription;
     private String artistBiography;
     private String instagramLink;
+    private List<Work> artistWorks;
 }
