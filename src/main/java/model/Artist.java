@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +19,18 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long artistId;
 
-    @ManyToOne //vários artistas estão vinculados a um estúdio
     private String artistName;
 
-    private User artistStyle;
+    @ManyToOne 
+    private User artistStudio;
+
+    private String artistStyle;
     private String artistDescription;
     private String artistBiography;
     private String instagramLink;
+
+    @OneToMany(mappedBy = "artistWork")
     private List<Work> artistWorks;
 }
