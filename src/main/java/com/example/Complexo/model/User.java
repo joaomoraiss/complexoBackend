@@ -2,11 +2,8 @@ package com.example.Complexo.model;
 
 
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity @Getter @Setter @ToString @NoArgsConstructor @Data
+@Table(name = "app_user")
 public class User {
 
     @Id
@@ -26,8 +24,8 @@ public class User {
     private String studioEmail;
     private String studioPassword;
 
-    @OneToMany(mappedBy="artistStudio")
-    private List<Artist> studioArtists;
+    @OneToMany(mappedBy = "artistStudio")
+    private List<Artist> artistStudio;
 
     private List<String> studioImages;
     private String studioLocation;
