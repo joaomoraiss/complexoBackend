@@ -2,12 +2,7 @@ package com.example.Complexo.model;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +18,8 @@ public class Artist {
 
     private String artistName;
 
-    @ManyToOne 
+    @ManyToOne
+    @JoinColumn(name = "studio_id")
     private User artistStudio;
 
     private String artistStyle;
