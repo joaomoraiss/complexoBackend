@@ -2,7 +2,13 @@ package com.example.Complexo.model;
 
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data @Entity
@@ -23,7 +29,7 @@ public class User {
     @Column(name = "studio_description")
     private String studioDescription;
 
-    @Column(name = "studio_name")
+    @Column(name = "studio_email")
     private String studioEmail;
 
     @Column(name = "studio_password")

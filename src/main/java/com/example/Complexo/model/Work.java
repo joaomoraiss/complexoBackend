@@ -19,7 +19,6 @@ public class Work {
     private Long workId;
 
     @ManyToOne
-    @Column(name = "artist_work")
     private Artist artistWork;
 
     @Column(name = "work_title")
