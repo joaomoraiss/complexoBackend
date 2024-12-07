@@ -2,6 +2,8 @@ package com.example.Complexo.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class User {
     private String studioPassword;
 
     @OneToMany(mappedBy = "artistStudio")
+    @JsonIgnore
     private List<Artist> artistStudio;
 
     @Column(name = "studio_images")

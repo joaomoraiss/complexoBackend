@@ -1,7 +1,5 @@
 package com.example.Complexo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,23 +10,23 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data @Entity
-@Table(name = "app_works")
-public class Work {
+@Table(name = "app_review")
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "work_id")
-    private Long workId;
+    @Column(name = "review_id")
+    private Long reviewId;
+
+    private int stars;
+
+    private String emailAdress;
+
+    private String personName;
+
+    private String comment;
 
     @ManyToOne
-    @JsonIgnore
-    private Artist artistWork;
+    private User studioReview; //estudio avaliado
 
-    @Column(name = "work_title")
-    private String title;
-
-    @Column(name = "work_description")
-    private String description;
-
-    private String imageURL;
 }
