@@ -2,7 +2,17 @@ package com.example.Complexo.model;
 
 import java.util.List;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data @Entity
@@ -19,6 +29,7 @@ public class Artist {
 
     @ManyToOne
     @JoinColumn(name = "studio_id")
+    @JsonIgnore
     private User artistStudio;
 
     @Column(name = "artist_style")
@@ -34,5 +45,6 @@ public class Artist {
     private String instagramLink;
 
     @OneToMany(mappedBy = "artistWork")
+    @JsonIgnore
     private List<Work> artistWorks;
 }
