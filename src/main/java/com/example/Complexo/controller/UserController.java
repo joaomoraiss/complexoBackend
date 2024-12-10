@@ -4,15 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.Complexo.service.*;
 import com.example.Complexo.model.*;
@@ -51,5 +46,18 @@ public class UserController {
     public ResponseEntity<User> updateUserById(@PathVariable Long studioId, @RequestBody User userDetails) {
         User updatedUser = userService.updateUserById(studioId, userDetails);
         return ResponseEntity.ok(updatedUser);
+    }
+    @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        UserDetails userDetails = userService.findBystudioEmail(email);
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); //
+        }
+
+        User user = (User) userDetails;
+        return ResponseEntity.ok(user);
     }
 }

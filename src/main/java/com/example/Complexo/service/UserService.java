@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -50,5 +52,14 @@ public class UserService {
             userDetails.setStudioId(studioId);
             return userRepository.save(userDetails);
         }).orElseThrow(() -> new RuntimeException("Atualização mal sucedida! Esse estúdio não foi encontrado ou não existe."));
+    }
+    @Transactional
+    public UserDetails findBystudioEmail(String email) {
+        UserDetails userDetails = userRepository.findBystudioEmail(email);
+
+        if (userDetails == null) {throw new UsernameNotFoundException("Usuário com o email '"
+                + email + "' não foi encontrado.");}
+
+        return (User) userDetails;
     }
 }
