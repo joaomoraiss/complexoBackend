@@ -21,6 +21,10 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        if (userService.findBystudioEmail(user.getStudioEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
         User newUser = userService.createUser(user);
         return ResponseEntity.status(201).body(newUser);
     }

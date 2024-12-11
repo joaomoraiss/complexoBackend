@@ -78,10 +78,11 @@ public class User implements UserDetails {
         return studioEmail;
     }
 
-    public User(UserRole role, String studioEmail, String studioPassword) {
+    public User(UserRole role, String studioEmail, String studioPassword, String nomeEstudio) {
         this.role = role;
         this.studioEmail = studioEmail;
         this.studioPassword = studioPassword;
+        this.studioName = nomeEstudio;
     }
 
     @Override

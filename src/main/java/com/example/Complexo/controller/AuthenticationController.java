@@ -40,11 +40,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if (this.repository.findBystudioEmail(data.email()) != null) return ResponseEntity
-                .badRequest().build();
+                .badRequest().body("Email já está registrado!");
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.role(), data.email(), encryptedPassword);
+        User newUser = new User(data.role(), data.email(), encryptedPassword, data.nomeEstudio());
 
         this.repository.save(newUser);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Usuário registrado com sucesso!");
     }
 }
