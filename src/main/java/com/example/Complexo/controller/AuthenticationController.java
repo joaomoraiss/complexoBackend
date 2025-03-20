@@ -1,5 +1,6 @@
 package com.example.Complexo.controller;
 
+import com.example.Complexo.infra.security.RecaptchaService;
 import com.example.Complexo.infra.security.TokenService;
 import com.example.Complexo.model.AuthenticationDTO;
 import com.example.Complexo.model.LoginResponseDTO;
@@ -26,9 +27,15 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private RecaptchaService recaptchaService;
+
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO data){
+        if (!recaptchaService.validateRecaptcha(data.recaptchaToken())) {
+            return ResponseEntity.badRequest().body("Falha na validação do reCAPTCHA!");
+        }
         var usernamePassword =  new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 

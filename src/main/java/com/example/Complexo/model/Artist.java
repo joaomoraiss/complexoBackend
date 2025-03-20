@@ -4,19 +4,15 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data @Entity
 @Table(name = "app_artists")
+@Setter
+@Getter
 public class Artist {
 
     @Id
@@ -44,7 +40,21 @@ public class Artist {
     @Column(name = "artist_instagram")
     private String instagramLink;
 
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Agendamento> agendamentos;
+
     @OneToMany(mappedBy = "artistWork")
     @JsonIgnore
     private List<Work> artistWorks;
+
+    Artist(){}
+    Artist(String artistName, User artistStudio, String artistStyle, String artistDescription, String artistBiography, String instagramLink) {
+        this.artistName = artistName;
+        this.artistStudio = artistStudio;
+        this.artistStyle = artistStyle;
+        this.artistDescription = artistDescription;
+        this.artistBiography = artistBiography;
+        this.instagramLink = instagramLink;
+    }
 }
