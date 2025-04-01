@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Complexo.service.*;
-import com.example.Complexo.model.*;
+import com.example.Complexo.model.Artist;
+import com.example.Complexo.service.ArtistService;
 
 @RestController
 @RequestMapping("/artistas")

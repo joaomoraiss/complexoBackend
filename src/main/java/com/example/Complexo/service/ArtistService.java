@@ -6,9 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Complexo.model.Artist;
+import com.example.Complexo.repository.ArtistRepository;
+
 import jakarta.transaction.Transactional;
-import com.example.Complexo.repository.*;
-import com.example.Complexo.model.*;
 
 @Service
 public class ArtistService {
@@ -16,25 +17,21 @@ public class ArtistService {
     @Autowired
     private ArtistRepository artistRepository;
 
-    //criar artista
     @Transactional
     public Artist createArtist(Artist artist) {
         return artistRepository.save(artist);
     }
 
-    //buscar artista pelo id
     @Transactional
     public Optional<Artist> getArtistById(Long artistId) {
         return artistRepository.findById(artistId);
     }
 
-    //buscar todos os artistas (vai retornar uma lista de artistas aqui NÃO é pra passar no id)
     @Transactional
     public List<Artist> getAllArtists() {
         return artistRepository.findAll();
     }
 
-    //deletar um artista pelo id
     @Transactional
     public void deleteArtistById(Long artistId) {
         if (!artistRepository.existsById(artistId)) {
@@ -43,7 +40,6 @@ public class ArtistService {
         artistRepository.deleteById(artistId);
     }
 
-    //atualizar um artista pelo id
     @Transactional
     public Artist updateArtistById(Long artistId, Artist artistDetails) {
         return artistRepository.findById(artistId).map(artist -> {
