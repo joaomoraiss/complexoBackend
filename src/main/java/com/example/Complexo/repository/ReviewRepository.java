@@ -1,10 +1,12 @@
 package com.example.Complexo.repository;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.Complexo.model.*;
-
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.Complexo.model.Review;
+import com.example.Complexo.model.User;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
