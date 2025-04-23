@@ -5,24 +5,26 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data @Entity
 @Table(name = "app_user")
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -54,8 +56,11 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Artist> artistStudio;
 
-    @Column(name = "studio_images")
-    private List<String> studioImages;
+@ElementCollection
+@CollectionTable(name = "studio_images", joinColumns = @JoinColumn(name = "studio_id"))
+@Column(name = "image_url")
+private List<String> studioImages;
+
 
     @Column(name = "studio_location")
     private String studioLocation;
@@ -104,4 +109,14 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void setStudioId(Long studioId) {
+        this.studioId = studioId;
+    }
+    
+    public String getStudioEmail() {
+        return studioEmail;
+    }
+    
+
 }

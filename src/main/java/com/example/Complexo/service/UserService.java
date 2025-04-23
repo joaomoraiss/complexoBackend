@@ -1,6 +1,4 @@
 package com.example.Complexo.service;
-import com.example.Complexo.repository.*;
-import com.example.Complexo.model.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.example.Complexo.model.*;
+import com.example.Complexo.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -55,11 +56,17 @@ public class UserService {
     }
     @Transactional
     public UserDetails findBystudioEmail(String email) {
-        UserDetails userDetails = userRepository.findBystudioEmail(email);
-
-        if (userDetails == null) {throw new UsernameNotFoundException("Usuário com o email '"
-                + email + "' não foi encontrado.");}
-
-        return (User) userDetails;
+        User user = userRepository.findBystudioEmail(email);
+    
+        if (user == null) {
+            throw new UsernameNotFoundException("Usuário com o email '" + email + "' não foi encontrado.");
+        }
+    
+        return user;
+    }
+    
+    @Transactional
+    public boolean emailExists(String email) {
+        return userRepository.findBystudioEmail(email) != null;
     }
 }

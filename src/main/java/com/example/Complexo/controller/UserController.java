@@ -7,10 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Complexo.service.*;
-import com.example.Complexo.model.*;
+import com.example.Complexo.model.User;
+import com.example.Complexo.service.UserService;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -21,13 +29,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userService.findBystudioEmail(user.getStudioEmail()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null);
+        if (userService.emailExists(user.getStudioEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         User newUser = userService.createUser(user);
         return ResponseEntity.status(201).body(newUser);
     }
+    
 
     @GetMapping("/{studioId}")
     public ResponseEntity<User> getUserById(@PathVariable Long studioId) {

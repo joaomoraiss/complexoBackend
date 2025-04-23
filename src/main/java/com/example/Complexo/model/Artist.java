@@ -61,4 +61,8 @@ public class Artist {
     @OneToMany(mappedBy = "artistWork")
     @JsonIgnore
     private List<Work> artistWorks;
+
+    public void setArtistId(Long artistId) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
