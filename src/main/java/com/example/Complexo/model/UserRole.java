@@ -1,7 +1,8 @@
 package com.example.Complexo.model;
 
 public enum UserRole {
-    STUDIO("studio");
+    STUDIO("studio"),
+    CLIENTE("client");
 
     private String role;
 

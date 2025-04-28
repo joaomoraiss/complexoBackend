@@ -1,4 +1,7 @@
 package com.example.Complexo.model;
 
-public record AuthenticationDTO(String email, String password, String recaptchaToken) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthenticationDTO(@NotBlank @Email String email, @NotBlank String password, @NotBlank String recaptchaToken) {
 }

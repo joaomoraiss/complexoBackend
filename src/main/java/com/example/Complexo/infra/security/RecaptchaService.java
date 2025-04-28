@@ -12,18 +12,12 @@ public class RecaptchaService {
     @Value("${google.recaptcha.secret}")
     private String recaptchaSecret;
 
-    private static final String GOOGLE_RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+    private static final String VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
     public boolean validateRecaptcha(String recaptchaToken) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = GOOGLE_RECAPTCHA_VERIFY_URL + "?secret=" + recaptchaSecret + "&response=" + recaptchaToken;
-        Map<String, Object> response = restTemplate.postForObject(url, null, Map.class);
-
-        if (response == null || !Boolean.TRUE.equals(response.get("success"))) {
-            return false;
-        }
-
-        return true;
+        RestTemplate rest = new RestTemplate();
+        String url = VERIFY_URL + "?secret=" + recaptchaSecret + "&response=" + recaptchaToken;
+        Map<String, Object> resp = rest.postForObject(url, null, Map.class);
+        return resp != null && Boolean.TRUE.equals(resp.get("success"));
     }
 }
