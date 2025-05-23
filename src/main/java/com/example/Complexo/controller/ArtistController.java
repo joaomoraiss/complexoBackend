@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+
 
 import com.example.Complexo.model.Artist;
 import com.example.Complexo.service.ArtistService;
@@ -34,6 +37,17 @@ public class ArtistController {
     public ResponseEntity<Artist> getArtistById(@PathVariable Long artistId) {
         Optional<Artist> artist = artistService.getArtistById(artistId);
         return artist.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/searchByName")
+    public ResponseEntity<?> getArtistByName(@PathVariable String name){
+        try {
+            List<Artist> artistas = artistService.getArtistsByName(name);
+            return ResponseEntity.ok(artistas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping

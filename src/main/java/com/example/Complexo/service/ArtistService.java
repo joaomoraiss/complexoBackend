@@ -1,5 +1,6 @@
 package com.example.Complexo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.Complexo.model.Artist;
 import com.example.Complexo.repository.ArtistRepository;
+import java.util.List;
+
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +23,15 @@ public class ArtistService {
     @Transactional
     public Artist createArtist(Artist artist) {
         return artistRepository.save(artist);
+    }
+
+    public List<Artist> getArtistsByName(String name){
+        List<Artist> artists = artistRepository.findAll();
+        List<Artist> artistsEncontrados = new ArrayList<>();
+        for (Artist artist : artists){
+            if(artist.getArtistName().toLowerCase().equals(name.toLowerCase())) artistsEncontrados.add(artist);
+        }
+        return artistsEncontrados;
     }
 
     @Transactional
