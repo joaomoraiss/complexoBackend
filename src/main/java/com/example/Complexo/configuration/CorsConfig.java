@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Aceita todas as rotas
-                        .allowedOrigins("http://localhost:5173") // De onde pode vir a requisição
+                        .allowedOrigins("http://localhost:5173", "https://complexo-frontend.vercel.app") // De onde pode vir a requisição
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
                         .allowedHeaders("*") // Todos os headers
                         .allowCredentials(true); // Permite enviar cookies/sessão se precisar

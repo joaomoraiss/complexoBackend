@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         // 2️⃣ libera só estes endpoints
+                        .requestMatchers(HttpMethod.GET, "/artistas/searchByName").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register/cliente").permitAll()
