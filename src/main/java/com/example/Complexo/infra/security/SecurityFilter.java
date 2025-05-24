@@ -21,10 +21,11 @@ import java.util.List;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private static final List<String> PUBLIC_URLS = List.of(
-            "/auth/login",
-            "/auth/register/studio",
-            "/auth/register/cliente"
-    );
+        "/auth/login",
+        "/auth/register/studio",
+        "/auth/register/cliente",
+        "/artistas/searchByName"
+);
 
     @Autowired
     private TokenService tokenService;
@@ -41,21 +42,22 @@ public class SecurityFilter extends OncePerRequestFilter {
         String path   = req.getServletPath();
         String method = req.getMethod();
 
-        // se for POST em /auth/login ou /auth/register/**, não exige token
-        if ("POST".equalsIgnoreCase(method) && PUBLIC_URLS.contains(path)) {
+        // Se for rota pública, libera
+        if ( (method.equalsIgnoreCase("POST") && PUBLIC_URLS.contains(path))
+        || (method.equalsIgnoreCase("GET") && path.equals("/artistas/searchByName"))
+        ) {
             chain.doFilter(req, res);
             return;
         }
 
-        // caso contrário, tenta recuperar e validar o Bearer token
-        String header = req.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            String token    = header.substring(7);
+        // Validação JWT
+        String token = recoverToken(req);
+        if (token != null) {
             String username = tokenService.validateToken(token);
             if (username != null) {
-                UserDetails uds = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 var auth = new UsernamePasswordAuthenticationToken(
-                        uds, null, uds.getAuthorities()
+                        userDetails, null, userDetails.getAuthorities()
                 );
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
