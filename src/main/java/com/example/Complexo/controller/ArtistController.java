@@ -40,7 +40,7 @@ public class ArtistController {
     }
 
     @GetMapping("/searchByName")
-    public ResponseEntity<?> getArtistByName(@PathVariable String name){
+    public ResponseEntity<?> getArtistByName(@RequestParam String name){
         try {
             List<Artist> artistas = artistService.getArtistsByName(name);
             return ResponseEntity.ok(artistas);
