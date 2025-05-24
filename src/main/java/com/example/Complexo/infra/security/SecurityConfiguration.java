@@ -15,43 +15,42 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
-
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
     @Autowired
-    SecurityFilter securityFilter;
+    private SecurityFilter securityFilter;
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(request -> {
-                    var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173")); // ou List.of("*") para todos
-                    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOriginPatterns(List.of("*")); // Permite qualquer origem
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
-                    config.setAllowCredentials(false);
+                    config.setAllowCredentials(true); // Permitir headers como Authorization
                     return config;
                 }))
                 .csrf(cs -> cs.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 1️⃣ registra o seu DaoAuthenticationProvider
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        // 2️⃣ libera só estes endpoints
                         .requestMatchers(HttpMethod.GET, "/artistas/searchByName").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register/cliente").permitAll()
+                        .requestMatchers("/actuator/**").permitAll() // Permite monitoramento
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("STUDIO")
-                        // todo o resto exige autenticação
                         .anyRequest().authenticated()
                 )
-                // 3️⃣ injeta seu filtro JWT depois de configurar as autorizações
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -64,13 +63,14 @@ public class SecurityConfiguration {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
