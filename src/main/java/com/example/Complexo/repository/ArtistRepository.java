@@ -9,5 +9,6 @@ import com.example.Complexo.model.*;
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long>{
-    List<Artist> getArtistByartistName(String name);
+    List<Artist> findByArtistNameIgnoreCase(String name);
+
 }

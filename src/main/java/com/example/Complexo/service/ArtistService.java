@@ -26,13 +26,9 @@ public class ArtistService {
     }
 
     public List<Artist> getArtistsByName(String name){
-        List<Artist> artists = artistRepository.findAll();
-        List<Artist> artistsEncontrados = new ArrayList<>();
-        for (Artist artist : artists){
-            if(artist.getArtistName().toLowerCase().equals(name.toLowerCase())) artistsEncontrados.add(artist);
-        }
-        return artistsEncontrados;
+        return artistRepository.findByArtistNameIgnoreCase(name);
     }
+
 
     @Transactional
     public Optional<Artist> getArtistById(Long artistId) {
@@ -55,8 +51,14 @@ public class ArtistService {
     @Transactional
     public Artist updateArtistById(Long artistId, Artist artistDetails) {
         return artistRepository.findById(artistId).map(artist -> {
-            artistDetails.setArtistId(artistId);
-            return artistRepository.save(artistDetails);
+            artist.setArtistName(artistDetails.getArtistName());
+            artist.setArtistStyle(artistDetails.getArtistStyle());
+            artist.setArtistDescription(artistDetails.getArtistDescription());
+            artist.setArtistBiography(artistDetails.getArtistBiography());
+            artist.setInstagramLink(artistDetails.getInstagramLink());
+            artist.setArtistStudio(artistDetails.getArtistStudio());
+            return artistRepository.save(artist);
         }).orElseThrow(() -> new RuntimeException("Atualização mal sucedida! Esse artista não foi encontrado ou não existe."));
     }
+
 }

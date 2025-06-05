@@ -55,7 +55,7 @@ public class UserService {
         }).orElseThrow(() -> new RuntimeException("Atualização mal sucedida! Esse estúdio não foi encontrado ou não existe."));
     }
     @Transactional
-    public UserDetails findBystudioEmail(String email) {
+    public UserDetails findByStudioEmail(String email) {
         User user = userRepository.findBystudioEmail(email);
     
         if (user == null) {

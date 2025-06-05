@@ -41,14 +41,13 @@ public class ArtistController {
 
     @GetMapping("/searchByName")
     public ResponseEntity<?> getArtistByName(@RequestParam String name){
-        try {
-            List<Artist> artistas = artistService.getArtistsByName(name);
-            return ResponseEntity.ok(artistas);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        List<Artist> artistas = artistService.getArtistsByName(name);
+        if (artistas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum artista encontrado com esse nome.");
         }
+        return ResponseEntity.ok(artistas);
     }
+
 
     @GetMapping
     public List<Artist> getAllArtists() {

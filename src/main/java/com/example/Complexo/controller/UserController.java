@@ -62,7 +62,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        UserDetails userDetails = userService.findBystudioEmail(email);
+        UserDetails userDetails = userService.findByStudioEmail(email);
 
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

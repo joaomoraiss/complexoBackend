@@ -23,8 +23,6 @@ import lombok.Setter;
 @Data
 @Entity
 @Table(name = "app_artists")
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Artist {
@@ -58,11 +56,12 @@ public class Artist {
     @JsonIgnore
     private List<Agendamento> agendamentos;
 
-    @OneToMany(mappedBy = "artistWork")
+    @OneToMany(mappedBy = "artistWork", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Work> artistWorks;
 
     public void setArtistId(Long artistId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.artistId = artistId;
     }
+
 }

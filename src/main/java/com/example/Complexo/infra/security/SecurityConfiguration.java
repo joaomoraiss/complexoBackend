@@ -34,7 +34,7 @@ public class SecurityConfiguration {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(List.of("*")); // Permite qualquer origem
+                    config.setAllowedOriginPatterns(List.of("http://localhost:5173", "https://*.vercel.app")); // Permite qualquer origem
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true); // Permitir headers como Authorization
