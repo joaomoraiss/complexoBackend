@@ -38,7 +38,7 @@ public class AuthenticationController {
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO data) {
         // 1) recaptcha
         if (!recaptchaService.validateRecaptcha(data.recaptchaToken())) {
-            return ResponseEntity.badRequest().body("Falha na validação do reCAPTCHA!");
+        return ResponseEntity.badRequest().body("Falha na validação do reCAPTCHA!");
         }
 
         try {
@@ -46,7 +46,17 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(data.email(), data.password())
             );
             var jwt = tokenService.generateToken((AccountDetails) auth.getPrincipal());
-            return ResponseEntity.ok(new LoginResponseDTO(jwt));
+
+            // 2) Verifica se é studio ou cliente pelo e-mail
+            Object user;
+            var studio = repository.findBystudioEmail(data.email());
+            if (studio != null) {
+                user = studio;
+            } else {
+                user = clienteRepository.findByEmail(data.email());
+            }
+
+            return ResponseEntity.ok(new LoginResponseFullDTO(jwt, user));
 
         } catch (BadCredentialsException ex) {
             return ResponseEntity
