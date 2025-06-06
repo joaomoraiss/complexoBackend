@@ -27,8 +27,13 @@ public class UserService {
 
     //buscar usuario/estudio pelo id
     @Transactional
-    public Optional<User> getUserById(Long studioId) {
-        return userRepository.findById(studioId);
+    public User getUserById(Long studioId) {
+        return userRepository.findById(studioId).get();
+    }
+
+    public User addArtistToStudio(User user, Artist artist){
+        user.getArtistStudio().add(artist);
+        return user;
     }
 
     //buscar todos os usuarios (não é pra passar o id aqui)
