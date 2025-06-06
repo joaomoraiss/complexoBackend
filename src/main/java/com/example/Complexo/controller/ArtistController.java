@@ -1,5 +1,6 @@
 package com.example.Complexo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +43,14 @@ public class ArtistController {
     @GetMapping("/searchByName")
     public ResponseEntity<?> getArtistByName(@RequestParam String name){
         try {
-            List<Artist> artistas = artistService.getArtistsByName(name);
-            return ResponseEntity.ok(artistas);
+            List<Artist> artistas = artistService.getAllArtists();
+            List<Artist> artistasAchados = new ArrayList<>();
+            for(Artist artist : artistas){
+                if (artist.getArtistName().trim().equalsIgnoreCase(name.trim())) {
+                    artistasAchados.add(artist);
+                }
+            }
+            return ResponseEntity.ok(artistasAchados);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

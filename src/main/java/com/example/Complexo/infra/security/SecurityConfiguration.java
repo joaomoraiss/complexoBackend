@@ -44,12 +44,13 @@ public class SecurityConfiguration {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/artistas/searchByName").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll() // Permite monitoramento
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("STUDIO")
-                        .anyRequest().authenticated()
+                      //  .requestMatchers(HttpMethod.GET, "/artistas/searchByName").permitAll()
+                      //  .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                       // .requestMatchers(HttpMethod.POST, "/auth/register/**").permitAll()
+                       // .requestMatchers("/actuator/**").permitAll() // Permite monitoramento
+                      //  .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("STUDIO")
+                       // .anyRequest().authenticated()
+                       .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 

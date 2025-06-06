@@ -18,12 +18,12 @@ import java.util.List;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private static final List<String> PUBLIC_URLS = List.of(
-        "/auth/login",
-        "/auth/register/studio",
-        "/auth/register/cliente",
-        "/artistas/searchByName"
-);
+    //private static final List<String> PUBLIC_URLS = List.of(
+   //     "/auth/login",
+   //     "/auth/register/studio",
+// "/auth/register/cliente",
+ //       "/artistas/searchByName"
+// );
 
     @Autowired
     private TokenService tokenService;
@@ -41,12 +41,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         String method = req.getMethod();
 
         // Se for rota pública, libera
-        if ( (method.equalsIgnoreCase("POST") && PUBLIC_URLS.contains(path))
-        || (method.equalsIgnoreCase("GET") && path.equals("/artistas/searchByName"))
-        ) {
-            chain.doFilter(req, res);
-            return;
-        }
+       // if ( (method.equalsIgnoreCase("POST") && PUBLIC_URLS.contains(path))
+       // || (method.equalsIgnoreCase("GET") && path.equals("/artistas/searchByName"))
+       // ) {
+       //     chain.doFilter(req, res);
+       //     return;
+       // }
 
         // Validação JWT
         String token = recoverToken(req);
