@@ -41,6 +41,26 @@ public class ArtistController {
         return ResponseEntity.status(201).body(newArtist);
     }
 
+    @GetMapping("/studio/{studioId}")
+    public ResponseEntity<?> getArtistByStudioId (@PathVariable Long studioId) {
+        try {
+            List<Artist> artistas = artistService.getAllArtists();
+            List<Artist> artistasAchados = new ArrayList<>();
+            for (Artist artist : artistas) {
+                if (artist.getArtistStudio() == null) {
+                    continue; // Skip artists without a studio
+                }
+                if (artist.getArtistStudio().getStudioId().equals(studioId)) {
+                    artistasAchados.add(artist);
+                }
+            }
+            return ResponseEntity.ok(artistasAchados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/{artistId}")
     public ResponseEntity<Artist> getArtistById(@PathVariable Long artistId) {
         Optional<Artist> artist = artistService.getArtistById(artistId);

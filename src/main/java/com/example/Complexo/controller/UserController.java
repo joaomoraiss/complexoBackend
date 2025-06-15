@@ -1,21 +1,15 @@
 package com.example.Complexo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.Complexo.model.Artist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.Complexo.model.User;
 import com.example.Complexo.service.UserService;
@@ -39,6 +33,22 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    @GetMapping("/searchByName")
+    public ResponseEntity<?> getStudioByName(@RequestParam String name){
+        try {
+            List<User> artistas = userService.getAllUsers();
+            List<User> artistasAchados = new ArrayList<>();
+            for(User artist : artistas){
+                if (artist.getStudioName().trim().equalsIgnoreCase(name.trim())) {
+                    artistasAchados.add(artist);
+                }
+            }
+            return ResponseEntity.ok(artistasAchados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     
