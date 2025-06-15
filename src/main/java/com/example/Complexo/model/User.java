@@ -43,17 +43,15 @@ private String studioEmail;
 @Column(name = "studio_password")
 private String studioPassword;
 
-    // NOVO CAMPO: Para a foto de perfil do usuário/estúdio
-    @Column(name = "profile_picture_base64", columnDefinition = "TEXT") // Use TEXT para strings longas como Base64
+    @Column(name = "profile_picture_base64", columnDefinition = "TEXT") // Usar text para strings longas (Base64)
     private String profilePictureBase64;
 
-@OneToMany(mappedBy = "artistStudio", cascade = CascadeType.ALL, orphanRemoval = true) // Adicionado cascade e orphanRemoval
+@OneToMany(mappedBy = "artistStudio", cascade = CascadeType.ALL, orphanRemoval = true)
 private List<Artist> artistStudio;
 
-    // Se você tiver outras imagens para o estúdio além da foto de perfil, pode manter esta:
     @ElementCollection
     @CollectionTable(name = "studio_images", joinColumns = @JoinColumn(name = "studio_id"))
-    @Column(name = "image_url", columnDefinition = "TEXT") // Use TEXT para strings longas como Base64
+    @Column(name = "image_url", columnDefinition = "TEXT")
     private List<String> studioImages;
 
 
@@ -63,13 +61,12 @@ private String studioLocation;
 @Column(name = "studio_instagram")
 private String studioInstagram;
 
-    // Opcional: Se for guardar a data de nascimento do cliente no User
     @Column(name = "date_of_birth")
-    private String dateOfBirth; // Ou LocalDate, se preferir lidar com datas
+    private String dateOfBirth;
 
 @Override
 public Collection<? extends GrantedAuthority> getAuthorities() {
-return List.of(new SimpleGrantedAuthority("ROLE_STUDIO")); // Considere adaptar para CLIENTE também
+return List.of(new SimpleGrantedAuthority("ROLE_STUDIO"));
 }
 
 @Override

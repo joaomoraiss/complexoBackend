@@ -52,7 +52,6 @@ public class UserService {
     }
 
     //atualizar usuario pelo id
-    // --- MUDANÇA AQUI: ATUALIZAÇÃO SELETIVA DOS DADOS DO USUÁRIO ---
     @Transactional
     public User updateUserById(Long studioId, User userDetails) {
         return userRepository.findById(studioId).map(existingUser -> {

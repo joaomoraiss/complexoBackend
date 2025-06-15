@@ -30,7 +30,7 @@ private String artistName;
 
 @ManyToOne
 @JoinColumn(name = "studio_id")
-@JsonIgnore // Mantenha este JsonIgnore para evitar recursão infinita na serialização
+@JsonIgnore // manter este JsonIgnore para evitar recursão infinita na serialização pelo amor de deus
 private User artistStudio;
 
 @Column(name = "artist_style")
@@ -46,24 +46,18 @@ private String artistBiography;
 private String instagramLink;
 
 @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, orphanRemoval = true)
-@JsonIgnore // Mantenha este JsonIgnore
+@JsonIgnore // manter este JsonIgnore
 private List<Agendamento> agendamentos;
 
 @OneToMany(mappedBy = "artistWork")
 @JsonIgnore // Mantenha este JsonIgnore
 private List<Work> artistWorks;
 
-    // NOVO CAMPO: Para receber as imagens do front-end
-    // Lembre-se que se 'artistWorks' já serve para imagens, você pode ajustar
-    // essa lista para aceitar strings Base64 diretamente, ou usar este novo campo.
-    // Se 'artistWorks' for apenas para obras (não imagens em Base64), mantenha este novo campo.
-    // É importante que o nome deste campo corresponda ao que você está enviando no React (artistImages)
-    @ElementCollection // Para armazenar uma coleção de elementos simples (strings, neste caso)
+
+    @ElementCollection
     @CollectionTable(name = "artist_images", joinColumns = @JoinColumn(name = "artist_id"))
     @Column(name = "image_url", columnDefinition = "TEXT") // Nome da coluna na tabela de coleção
     private List<String> artistImages;
 
 
-    // O método setArtistId que causava erro foi removido.
-    // O Lombok (com @Data ou @Setter) já gera o setter correto.
 }
