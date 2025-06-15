@@ -54,11 +54,29 @@ public class UserService {
     //atualizar usuario pelo id
     @Transactional
     public User updateUserById(Long studioId, User userDetails) {
-        return userRepository.findById(studioId).map(user -> {
-            userDetails.setStudioId(studioId);
-            return userRepository.save(userDetails);
+        return userRepository.findById(studioId).map(existingUser -> {
+            // Atualiza apenas os campos que o frontend pode enviar
+            // e que queremos permitir a atualização.
+            if (userDetails.getStudioName() != null) {
+                existingUser.setStudioName(userDetails.getStudioName());
+            }
+            if (userDetails.getStudioDescription() != null) {
+                existingUser.setStudioDescription(userDetails.getStudioDescription());
+            }
+            if (userDetails.getStudioInstagram() != null) {
+                existingUser.setStudioInstagram(userDetails.getStudioInstagram());
+            }
+            if (userDetails.getProfilePictureBase64() != null) {
+                existingUser.setProfilePictureBase64(userDetails.getProfilePictureBase64());
+            }
+            // Não atualize email, senha ou outros campos sensíveis aqui,
+            // a menos que seja um processo de edição separado e seguro.
+
+            return userRepository.save(existingUser); // Salva o usuário existente com as atualizações
         }).orElseThrow(() -> new RuntimeException("Atualização mal sucedida! Esse estúdio não foi encontrado ou não existe."));
     }
+    // --- FIM DA MUDANÇA ---
+
     @Transactional
     public UserDetails findBystudioEmail(String email) {
         User user = userRepository.findBystudioEmail(email);

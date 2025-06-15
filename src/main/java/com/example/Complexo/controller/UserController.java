@@ -29,11 +29,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userService.emailExists(user.getStudioEmail())) {
+        try {
+            if (userService.emailExists(user.getStudioEmail())) {
+                // Se o email já existe vai retornar um BAD_REQUEST com uma mensagem de erro
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            User newUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        User newUser = userService.createUser(user);
-        return ResponseEntity.status(201).body(newUser);
     }
     
 
