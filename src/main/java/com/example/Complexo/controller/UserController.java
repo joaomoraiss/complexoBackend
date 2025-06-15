@@ -29,11 +29,19 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userService.emailExists(user.getStudioEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            if (userService.emailExists(user.getStudioEmail())) {
+                // Se o email já existe, retorna um BAD_REQUEST com uma mensagem de erro
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Poderíamos retornar um objeto de erro mais útil aqui
+            }
+            User newUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // Usar HttpStatus.CREATED para 201
+        } catch (Exception e) {
+            // Loga a exceção completa no console do Spring Boot
+            e.printStackTrace();
+            // Você também pode retornar um ResponseEntity com a mensagem de erro da exceção
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Ou um objeto de erro com e.getMessage()
         }
-        User newUser = userService.createUser(user);
-        return ResponseEntity.status(201).body(newUser);
     }
     
 
