@@ -1,5 +1,6 @@
 package com.example.Complexo.controller;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,18 +44,45 @@ public class UserController {
     @GetMapping("/searchByName")
     public ResponseEntity<?> getStudioByName(@RequestParam String name){
         try {
-            List<User> artistas = userService.getAllUsers();
-            List<User> artistasAchados = new ArrayList<>();
-            for(User artist : artistas){
-                if (artist.getStudioName().trim().equalsIgnoreCase(name.trim())) {
-                    artistasAchados.add(artist);
+            List<User> allUsers = userService.getAllUsers();
+            List<User> foundStudios = new ArrayList<>();
+
+            // Normalizar o termo de busca
+            String normalizedSearch = normalizeString(name);
+
+            for (User studio : allUsers) {
+                if (studio.getStudioName() != null) {
+                    // Normalizar o nome do estúdio
+                    String normalizedStudioName = normalizeString(studio.getStudioName());
+
+                    // Verificar se contém o termo normalizado
+                    if (normalizedStudioName.contains(normalizedSearch)) {
+                        foundStudios.add(studio);
+                    }
                 }
             }
-            return ResponseEntity.ok(artistasAchados);
+
+            return ResponseEntity.ok(foundStudios);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    private String normalizeString(String input) {
+        if (input == null) return "";
+
+        // Converter para minúsculas
+        String normalized = input.toLowerCase();
+
+        // Remover espaços
+        normalized = normalized.replaceAll("\\s+", "");
+
+        // Remover acentos e caracteres especiais
+        normalized = Normalizer.normalize(normalized, Normalizer.Form.NFD);
+        normalized = normalized.replaceAll("[^\\p{ASCII}]", "");
+        normalized = normalized.replaceAll("[^a-z0-9]", "");
+
+        return normalized;
     }
     
 
