@@ -46,7 +46,7 @@ private String studioPassword;
     @Column(name = "profile_picture_base64", columnDefinition = "TEXT") // Usar text para strings longas (Base64)
     private String profilePictureBase64;
 
-@OneToMany(mappedBy = "artistStudio", cascade = CascadeType.ALL, orphanRemoval = true)
+@OneToMany(mappedBy = "artistStudio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 private List<Artist> artistStudio;
 
     @ElementCollection
